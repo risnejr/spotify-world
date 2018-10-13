@@ -11,6 +11,7 @@ import './App.css';
 import Spotify from 'spotify-web-api-js';
 import { geoPath } from "d3-geo"
 import { geoTimes } from "d3-geo-projection"
+import { Motion, spring } from "react-motion"
 
 let url = new URL(window.location.href)
 let token = url.searchParams.get("access_token")
@@ -31,7 +32,8 @@ class App extends Component {
       country: null,
     }
     this.projection = this.projection.bind(this)
-    this.handleClick = this.handleClick.bind(this);
+    this.handleClick = this.handleClick.bind(this)
+    this.updateCenter = this.updateCenter.bind(this)
   }
 
   componentDidMount() {
@@ -44,6 +46,12 @@ class App extends Component {
       .scale(205)
   }
 
+  updateCenter(evt) {
+    this.setState({
+      center: [evt.clientX, evt.clientY]
+    })
+  }
+
   handleClick(geography, evt) {
     // zooming
     const path = geoPath().projection(this.projection())
@@ -53,6 +61,7 @@ class App extends Component {
       zoom: 3,
       country: geography.properties.iso_a2,
     })
+
     // Play music
     console.log(geography.properties.ISO_A2);
     spotify.getCategoryPlaylists('pop', {limit : 5, country: this.state.country})
@@ -76,6 +85,19 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+      <Motion
+          defaultStyle={{
+            zoom: 1,
+            x: 0,
+            y: 0,
+          }}
+          style={{
+            zoom: spring(this.state.zoom, {stiffness: 210, damping: 20}),
+            x: spring(this.state.center[0], {stiffness: 210, damping: 20}),
+            y: spring(this.state.center[1], {stiffness: 210, damping: 20}),
+          }}
+          >
+      {({zoom,x,y}) => (
         <ComposableMap
         projection={this.projection}
         width={this.props.width}
@@ -85,7 +107,10 @@ class App extends Component {
             height: "auto",
         }}
         >
-        <ZoomableGroup center={this.state.center} zoom={this.state.zoom}>
+        <ZoomableGroup
+        center={[x,y]}
+        zoom={zoom}
+        disablePanning={true} >
         <Geographies geography="world.json" disableOptimization>
         {(geographies, projection) => geographies.map((geography, i) =>
           geography.id !== "010" && (
@@ -95,6 +120,7 @@ class App extends Component {
             projection={projection}
             cacheId={`path-${i}`}
             onClick={this.handleClick}
+            onMouseUp={this.updateCenter}
             style={{
               default: {
                 fill: "#ECEFF1",
@@ -121,6 +147,8 @@ class App extends Component {
         </Geographies>
         </ZoomableGroup>
         </ComposableMap>
+      )}
+      </Motion>
       </div>
     );
   }
