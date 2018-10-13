@@ -10,21 +10,30 @@ import './App.css';
 
 window.onSpotifyWebPlaybackSDKReady = () => {};
 
+let url = new URL(window.location.href)
+let token = url.searchParams.get("access_token")
+let spotifyApi = require('spotify-web-api-js');
+let spotify = new spotifyApi();
+spotify.setAccessToken(token);
+
 class App extends Component {
   constructor(props) {
     super(props)
-    this.url = new URL(window.location.href)
-    this.token = this.url.searchParams.get("access_token")
   }
-
   componentDidMount() {
-    console.log(this.token)
+    console.log(token)
   }
 
   handleClick(geography, evt) {
     console.log(geography.properties.ISO_A2)
-    
+      spotify.getCategoryPlaylists('rock', {limit : 5, country: geography.properties.ISO_A2})
+          .then(function(data) {
+              console.log(data);
+          }, function(err) {
+              console.error(err);
+          });
   }
+
 
   render() {
     return (
