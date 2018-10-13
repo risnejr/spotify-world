@@ -4,34 +4,34 @@ import {
   ZoomableGroup,
   Geographies,
   Geography,
-} from "react-simple-maps"
+} from "react-simple-maps";
 
 import './App.css';
 
-var env = require('./.env');
-var SpotifyAPI = require('spotify-web-api-js');
-var spotify = new SpotifyAPI();
-var clientId = env.CLIENT_ID;
-var clientSecret = env.CLIENT_SECRET;
-
-spotify.setAccessToken(clientId + clientSecret);
+let url = new URL(window.location.href)
+let token = url.searchParams.get("access_token")
+let spotifyApi = require('spotify-web-api-js');
+let spotify = new spotifyApi();
+spotify.setAccessToken(token);
 
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      country: ""
-    }
+  }
+  componentDidMount() {
+    console.log(token)
   }
 
   handleClick(geography, evt) {
-    console.log(geography.properties.ISO_A2)
-    spotify.getCategoryPlaylists('rock', {limit: 5, country: geography.properties.ISO_A2},
-        function(err, data) {
-            if (err) console.error(err);
-            else console.log(data);
-        });
+    console.log(geography.properties.ISO_A2);
+    spotify.getCategoryPlaylists('rock', {limit : 5, country: geography.properties.ISO_A2})
+      .then(function(data) {
+           console.log(data);
+      }, function(err) {
+           console.error(err);
+      });
   }
+
 
   render() {
     return (
