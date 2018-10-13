@@ -16,8 +16,9 @@ class App extends Component {
     }
   }
 
-  handleClick(geography) {
+  handleClick(geography, evt) {
     console.log(geography.properties.ISO_A2)
+    
   }
 
   render() {
@@ -42,7 +43,7 @@ class App extends Component {
                   key={i}
                   geography={geography}
                   projection={projection}
-                  onClick={this.handleClick(geography)}
+                  onClick={this.handleClick}
                   style={{
                     default: {
                       fill: "#ECEFF1",
