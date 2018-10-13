@@ -22,15 +22,18 @@ class App extends Component {
 
   handleClick(geography, evt) {
     console.log(geography.properties.ISO_A2);
-    spotify.getCategoryPlaylists('rock', {limit : 5, country: geography.properties.ISO_A2})
+    spotify.getCategoryPlaylists('pop', {limit : 5, country: geography.properties.ISO_A2})
       .then(function(data) {
         console.log(data)
+        let playlist = data.playlists.items[0]
+        let playlistUri = playlist.uri  
+        let trackPosition = Math.floor(Math.random() * playlist.tracks.total);  
         spotify.play({
-          context_uri: data.playlists.items[0].uri,
+          context_uri: playlistUri,
           offset: {
-            position: 6
+            position: trackPosition
           },
-          position_ms: 0
+          position_ms: 60000
         })
       }, function(err) {
            console.error(err);
