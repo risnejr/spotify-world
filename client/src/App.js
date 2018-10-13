@@ -24,10 +24,12 @@ let deviceId = ""
 
 spotify.setAccessToken(token);
 
+document.body.style.overflow = "hidden"
+
 class App extends Component {
   static defaultProps = {
     width: 950,
-    height: 550,
+    height: 400,
   }
   constructor() {
     super()
@@ -38,7 +40,7 @@ class App extends Component {
     }
     this.projection = this.projection.bind(this)
     this.handleClick = this.handleClick.bind(this)
-    this.updateCenter = this.updateCenter.bind(this)
+    this.zoomOut = this.zoomOut.bind(this)
   }
 
   componentDidMount() {
@@ -72,13 +74,18 @@ class App extends Component {
       .scale(205)
   }
 
-  updateCenter(evt) {
+  zoomOut() {
     this.setState({
-      center: [evt.clientX, evt.clientY]
+      center: [0, 1],
+      zoom: 1
     })
   }
 
-  handleClick(geography, evt) {
+  handleClick(geography) {
+    if(this.state.country === geography.properties.ISO_A2) {
+      this.zoomOut()
+      return
+    }
     // zooming
     const path = geoPath().projection(this.projection())
     const centroid = this.projection().invert(path.centroid(geography))
@@ -130,8 +137,8 @@ class App extends Component {
         width={this.props.width}
         height={this.props.height}
         style={{
-          width: "99%",
-          height: "auto",
+          width: "100%",
+          height: "100%",
         }}
         >
         <ZoomableGroup
@@ -146,8 +153,7 @@ class App extends Component {
             geography={geography}
             projection={projection}
             cacheId={`path-${i}`}
-            onClick={this.handleClick}
-            onMouseUp={this.updateCenter}
+            onClick={availableMarkets.includes(geography.properties.ISO_A2) ? this.handleClick : this.zoomOut}
             style={ availableMarkets.includes(geography.properties.ISO_A2) ? {
               default: {
                 fill: "#ECEFF1",
