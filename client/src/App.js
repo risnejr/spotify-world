@@ -28,7 +28,7 @@ class App extends Component {
     this.state = {
       center: [0,1],
       zoom: 1,
-      currentCountry: null,
+      country: null,
     }
     this.projection = this.projection.bind(this)
     this.handleClick = this.handleClick.bind(this);
@@ -51,11 +51,11 @@ class App extends Component {
     this.setState({
       center: centroid,
       zoom: 3,
-      currentCountry: geography.properties.iso_a3,
+      country: geography.properties.iso_a2,
     })
     // Play music
     console.log(geography.properties.ISO_A2);
-    spotify.getCategoryPlaylists('pop', {limit : 5, country: geography.properties.ISO_A2})
+    spotify.getCategoryPlaylists('pop', {limit : 5, country: this.state.country})
       .then(function(data) {
         console.log(data)
         let playlist = data.playlists.items[0]
