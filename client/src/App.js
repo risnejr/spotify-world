@@ -4,16 +4,21 @@ import {
   ZoomableGroup,
   Geographies,
   Geography,
-} from "react-simple-maps"
+} from "react-simple-maps";
 
 import './App.css';
+
+window.onSpotifyWebPlaybackSDKReady = () => {};
 
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      country: ""
-    }
+    this.url = new URL(window.location.href)
+    this.token = this.url.searchParams.get("access_token")
+  }
+
+  componentDidMount() {
+    console.log(this.token)
   }
 
   handleClick(geography, evt) {
