@@ -8,6 +8,14 @@ import {
 
 import './App.css';
 
+var env = require('./.env');
+var SpotifyAPI = require('spotify-web-api-js');
+var spotify = new SpotifyAPI();
+var clientId = env.CLIENT_ID;
+var clientSecret = env.CLIENT_SECRET;
+
+spotify.setAccessToken(clientId + clientSecret);
+
 class App extends Component {
   constructor(props) {
     super(props)
@@ -18,7 +26,11 @@ class App extends Component {
 
   handleClick(geography, evt) {
     console.log(geography.properties.ISO_A2)
-    
+    spotify.getCategoryPlaylists('rock', {limit: 5, country: geography.properties.ISO_A2},
+        function(err, data) {
+            if (err) console.error(err);
+            else console.log(data);
+        });
   }
 
   render() {
