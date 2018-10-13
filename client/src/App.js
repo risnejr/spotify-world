@@ -5,19 +5,17 @@ import {
   Geographies,
   Geography,
 } from "react-simple-maps";
+import Spotify from 'spotify-web-api-js';
 
 import './App.css';
 
 let url = new URL(window.location.href)
 let token = url.searchParams.get("access_token")
-let spotifyApi = require('spotify-web-api-js');
-let spotify = new spotifyApi();
+let spotify = new Spotify();
+
 spotify.setAccessToken(token);
 
 class App extends Component {
-  constructor(props) {
-    super(props)
-  }
   componentDidMount() {
     console.log(token)
   }
@@ -26,12 +24,18 @@ class App extends Component {
     console.log(geography.properties.ISO_A2);
     spotify.getCategoryPlaylists('rock', {limit : 5, country: geography.properties.ISO_A2})
       .then(function(data) {
-           console.log(data);
+        console.log(data)
+        spotify.play({
+          context_uri: data.playlists.items[0].uri,
+          offset: {
+            position: 6
+          },
+          position_ms: 0
+        })
       }, function(err) {
            console.error(err);
       });
   }
-
 
   render() {
     return (
