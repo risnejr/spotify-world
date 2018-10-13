@@ -12,8 +12,8 @@ var request = require('request'); // "Request" library
 var cors = require('cors');
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
-
 var env = require('./.env');
+
 var client_id = env.CLIENT_ID; // Your client id
 var client_secret = env.CLIENT_SECRET; // Your secret
 var redirect_uri = 'http://localhost:8888/callback'; // Your redirect uri
