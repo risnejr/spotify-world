@@ -189,6 +189,13 @@ class App extends Component {
     this.zoomIn(geography);
 
     // Get categories for the country and list them graphically
+    $('#modalWindow').on('hidden.bs.modal', e => {this.zoomOut();});
+
+    $("#spotAlert").html(geography.properties.NAME);
+    $("#spotAlert").toggleClass("show");
+    setTimeout(() => {$("#spotAlert").toggleClass('show');}, 3000);
+
+    // Play music
     spotify.getCategories({limit : 8, country: geography.properties.ISO_A2})
       .then(data => {
         this.setState({genreList: [{
@@ -205,6 +212,7 @@ class App extends Component {
 
           this.setState({genreList: [...this.state.genreList, genre]});
         }
+        $("#modalWindow").on('hidden.bs.modal', e => {this.zoomOut()})
         $("#modalWindow").modal();
       }, function(err) {
         console.error(err);
@@ -377,6 +385,8 @@ class App extends Component {
       )}
       </Motion>
       <Modal data = {this.state} handleClick = {this.handleImgClick}/>
+      <h3 style={{position: 'absolute', left: '1vw', bottom: '1vh', color:'#607D8B'}}>{this.state.artist !== '' ? this.state.artist + ' - ' + this.state.song : ''}</h3>
+      <div id="spotAlert" className={`alert alert-dark alert-dismissible text-center fade`} role="alert"></div>
       </div>
     );
   }

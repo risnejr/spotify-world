@@ -84,3 +84,17 @@ p.card-img-txt {
   /* left: 35%; */
   color: #fff;
 }
+
+#spotAlert {
+  position: absolute;
+  top: 0;
+  left: 33.5%;
+  width: 33vw;
+  border-radius: 0 0;
+  z-index: 1100;
+  color: #fff;
+  text-align: left;
+  padding: 0.5em 1em 1em 1em;
+  border: none;
+  background-color:rgba(0, 0, 0, 0.75);
+}
