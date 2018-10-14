@@ -6,7 +6,11 @@ import {
   Geography,
 } from "react-simple-maps";
 import Spotify from 'spotify-web-api-js';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import $ from 'jquery';
+import Popper from 'popper.js';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+import Modal from './Modal';
 import './App.css';
 
 import { geoPath } from "d3-geo"
@@ -31,9 +35,10 @@ class App extends Component {
     width: 950,
     height: 400,
   }
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
+      genreList: [],
       center: [0,1],
       zoom: 1,
       country: null,
@@ -81,7 +86,7 @@ class App extends Component {
     })
   }
 
-  handleClick(geography) {
+  handleClick = (geography) => {
     if(this.state.country === geography.properties.ISO_A2) {
       this.zoomOut()
       return
@@ -97,9 +102,46 @@ class App extends Component {
 
     // Play music
     console.log(geography.properties.ISO_A2);
-    spotify.getCategoryPlaylists('pop', {limit : 1, country: geography.properties.ISO_A2})
-      .then(function(data) {
-        console.log(data)
+    // spotify.getCategoryPlaylists('pop', {limit : 1, country: geography.properties.ISO_A2})
+    //   .then(data => {
+    //     console.log(data)
+    //     let playlist = data.playlists.items[0]
+    //     let playlistUri = playlist.uri
+    //     let trackPosition = Math.floor(Math.random() * playlist.tracks.total);
+    //     spotify.play({
+    //       device_id: deviceId,
+    //       context_uri: playlistUri,
+    //       offset: {
+    //         position: trackPosition
+    //       },
+    //       position_ms: 60000
+    //     })
+        
+    //   }, function(err) {
+    //     console.error(err);
+    //   });
+      spotify.getCategories({limit : 8, country: geography.properties.ISO_A2})
+          .then(data => {
+            console.log(this.state);
+            this.setState({genreList: []});
+            for(let i = 0; i < 8; i++){
+              let genre = {
+                  'id': data.categories.items[i].id,
+                  'src': data.categories.items[i].icons[0].url
+              };
+              this.setState({genreList: [...this.state.genreList, genre]});
+              console.log(data.categories.items[i])
+            }
+            $("#modalWindow").modal();
+          }, function(err) {
+               console.error(err);
+          });
+  }
+
+  handleImgClick = genre => {
+    spotify.getCategoryPlaylists(genre, {limit : 1, country: this.state.country})
+      .then(data => {
+        console.log(data);
         let playlist = data.playlists.items[0]
         let playlistUri = playlist.uri
         let trackPosition = Math.floor(Math.random() * playlist.tracks.total);
@@ -112,7 +154,7 @@ class App extends Component {
           position_ms: 60000
         })
       }, function(err) {
-        console.error(err);
+          console.error(err);
       });
   }
 
@@ -199,6 +241,7 @@ class App extends Component {
         </ComposableMap>
       )}
       </Motion>
+      <Modal data = {this.state} handleClick = {this.handleImgClick}/>
       </div>
     );
   }
