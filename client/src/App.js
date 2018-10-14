@@ -175,8 +175,7 @@ class App extends Component {
     })
 
     // Play music
-    console.log(geography.properties.ISO_A2);
-      spotify.getCategories({limit : 8, country: geography.properties.ISO_A2})
+    spotify.getCategories({limit : 8, country: geography.properties.ISO_A2})
           .then(data => {
             this.setState({genreList: [{
                 'id': "viral",
