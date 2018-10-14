@@ -111,6 +111,7 @@ class App extends Component {
       country: '',
       artist: '',
       song: '',
+      selectedCountry: '',
     }
     this.projection = this.projection.bind(this)
     this.handleClick = this.handleClick.bind(this)
@@ -130,10 +131,13 @@ class App extends Component {
       player.on('account_error', e => console.error(e));
       player.on('playback_error', e => console.error(e));
 
-      // player.on('player_state_changed', state => {
-      //   this.setState({song: state.track_window.current_track.name,
-      //                  artist: state.track_window.current_track.artists[0].name})
-      // })
+      player.on('player_state_changed', state => {
+        if(state !== null) {
+          this.setState({song: state.track_window.current_track.name,
+                         artist: state.track_window.current_track.artists[0].name})
+          console.log(this.state.artist, '-', this.state.song)
+        }
+      })
 
       // Ready
       player.on('ready', data => {
@@ -161,7 +165,8 @@ class App extends Component {
   }
 
   handleClick = (geography) => {
-    if(this.state.country === geography.properties.ISO_A2) {
+    if(this.state.country === geography.properties.ISO_A2 &&
+       this.state.zoom !== 1) {
       this.zoomOut()
       return
     }
@@ -202,6 +207,7 @@ class App extends Component {
   }
 
   handleImgClick = genre => {
+    this.setState({selectedCountry: this.state.country});
     if (genre === "viral"){
         let playlistUri = viralPlaylist[this.state.country];
         let temp = playlistUri.split(":");
@@ -279,43 +285,65 @@ class App extends Component {
             projection={projection}
             cacheId={`path-${i}`}
             onClick={availableMarkets.includes(geography.properties.ISO_A2) ? this.handleClick : this.zoomOut}
-            style={ availableMarkets.includes(geography.properties.ISO_A2) ? {
-              default: {
-                fill: "#ECEFF1",
-                stroke: "#607D8B",
-                strokeWidth: 0.75,
-                outline: "none",
-              },
-              hover: {
-                fill: "#55efc4",
-                stroke: "#00b894",
-                strokeWidth: 0.75,
-                outline: "none",
-              },
-              pressed: {
-                fill: "#00b894",
-                stroke: "#00b894",
-                strokeWidth: 0.75,
-                outline: "none",
-              },
+            style={ this.state.selectedCountry !== geography.properties.ISO_A2 ?
+              ( availableMarkets.includes(geography.properties.ISO_A2) ? {
+                default: {
+                  fill: "#ECEFF1",
+                  stroke: "#607D8B",
+                  strokeWidth: 0.75,
+                  outline: "none",
+                },
+                hover: {
+                  fill: "#55efc4",
+                  stroke: "#00b894",
+                  strokeWidth: 0.75,
+                  outline: "none",
+                },
+                pressed: {
+                  fill: "#00b894",
+                  stroke: "#00b894",
+                  strokeWidth: 0.75,
+                  outline: "none",
+                },
               } : {default: {
                 fill: "#ECEFF1",
                 stroke: "#607D8B",
                 strokeWidth: 0.75,
                 outline: "none",
               },
-              hover: {
-                fill: "#fab1a0",
-                stroke: "#e17055",
-                strokeWidth: 0.75,
-                outline: "none",
-              },
-              pressed: {
-                fill: "#e17055",
-                stroke: "#e17055",
-                strokeWidth: 0.75,
-                outline: "none",
-              }}}
+                hover: {
+                  fill: "#fab1a0",
+                  stroke: "#e17055",
+                  strokeWidth: 0.75,
+                  outline: "none",
+                },
+                pressed: {
+                  fill: "#e17055",
+                  stroke: "#e17055",
+                  strokeWidth: 0.75,
+                  outline: "none",
+                }}
+              ) : {
+                default: {
+                  fill: "#74b9ff",
+                  stroke: "#0984e3",
+                  strokeWidth: 0.75,
+                  outline: "none",
+                },
+                hover: {
+                  fill: "#55efc4",
+                  stroke: "#00b894",
+                  strokeWidth: 0.75,
+                  outline: "none",
+                },
+                pressed: {
+                  fill: "#00b894",
+                  stroke: "#00b894",
+                  strokeWidth: 0.75,
+                  outline: "none",
+                },
+              }
+            }
             />
           ))
         }
