@@ -8,7 +8,6 @@ import {
 import Spotify from 'spotify-web-api-js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import $ from 'jquery';
-import Popper from 'popper.js';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import Modal from './Modal';
 import './App.css';
@@ -41,7 +40,9 @@ class App extends Component {
       genreList: [],
       center: [0,1],
       zoom: 1,
-      country: null,
+      country: '',
+      artist: '',
+      song: '',
     }
     this.projection = this.projection.bind(this)
     this.handleClick = this.handleClick.bind(this)
@@ -60,6 +61,11 @@ class App extends Component {
       player.on('authentication_error', e => console.error(e));
       player.on('account_error', e => console.error(e));
       player.on('playback_error', e => console.error(e));
+
+      player.on('player_state_changed', state => { 
+        this.setState({song: state.track_window.current_track.name,
+                       artist: state.track_window.current_track.artists[0].name})
+      })
     
       // Ready
       player.on('ready', data => {
@@ -102,27 +108,8 @@ class App extends Component {
 
     // Play music
     console.log(geography.properties.ISO_A2);
-    // spotify.getCategoryPlaylists('pop', {limit : 1, country: geography.properties.ISO_A2})
-    //   .then(data => {
-    //     console.log(data)
-    //     let playlist = data.playlists.items[0]
-    //     let playlistUri = playlist.uri
-    //     let trackPosition = Math.floor(Math.random() * playlist.tracks.total);
-    //     spotify.play({
-    //       device_id: deviceId,
-    //       context_uri: playlistUri,
-    //       offset: {
-    //         position: trackPosition
-    //       },
-    //       position_ms: 60000
-    //     })
-        
-    //   }, function(err) {
-    //     console.error(err);
-    //   });
       spotify.getCategories({limit : 8, country: geography.properties.ISO_A2})
           .then(data => {
-            console.log(this.state);
             this.setState({genreList: []});
             for(let i = 0; i < 8; i++){
               let genre = {
@@ -130,18 +117,17 @@ class App extends Component {
                   'src': data.categories.items[i].icons[0].url
               };
               this.setState({genreList: [...this.state.genreList, genre]});
-              console.log(data.categories.items[i])
             }
             $("#modalWindow").modal();
           }, function(err) {
                console.error(err);
-          });
+    });
+    //this.setState({country: ''})
   }
 
   handleImgClick = genre => {
     spotify.getCategoryPlaylists(genre, {limit : 1, country: this.state.country})
       .then(data => {
-        console.log(data);
         let playlist = data.playlists.items[0]
         let playlistUri = playlist.uri
         let trackPosition = Math.floor(Math.random() * playlist.tracks.total);
