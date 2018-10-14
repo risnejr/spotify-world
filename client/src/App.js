@@ -202,18 +202,18 @@ class App extends Component {
 
     // Play music
     spotify.getCategories({limit : 8, country: geography.properties.ISO_A2})
-      .then(data => {
-        this.setState({genreList: [{
-          'id': "viral",
-          'name': "Viral",
-          'src': "https://t.scdn.co/images/827d138e-b6f6-4467-9782-3550ee1f6bec.jpg"
-        }]});
-        for(let i = 0; i < 7; i++){
-          let genre = {
-            'id': data.categories.items[i].id,
-            'name': data.categories.items[i].name,
-            'src': data.categories.items[i].icons[0].url
-          };
+          .then(data => {
+             this.setState({genreList: [{
+                'id': "viral",
+                'name': "Viral",
+                'src': "https://t.scdn.co/media/derived/trending-274x274_7b238f7217985e79d3664f2734347b98_0_0_274_274.jpg"
+            }]});
+            for(let i = 0; i < 7; i++){
+              let genre = {
+                  'id': data.categories.items[i].id,
+                  'name': data.categories.items[i].name,
+                  'src': data.categories.items[i].icons[0].url
+              };
 
           this.setState({genreList: [...this.state.genreList, genre]});
         }
