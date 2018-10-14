@@ -61,11 +61,11 @@ let viralPlaylist = {
   'IS' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbMHnoaLVkVuk',
   'IT' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbNGlbFNNXxgC',
   'JP' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbINTEnbFeb8d',
-  'LI' : 'spotify:album:2viDI6oI3hemgZROjm9IKZ',
+  'LI' : 'spotify:user:spotify:playlist:37i9dQZF1DXcBWIGoYBM5M',
   'LT' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbLDLOTfCtAUM',
   'LU' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbJ9SRaVj0yDF',
   'LV' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbIUY6VUoboP4',
-  'MC' : 'spotify:album:4X8OmfHoxew8PIprjgCp5Z',
+  'MC' : 'spotify:user:radiomonaco:playlist:3KtQKlYDRlC1Ubv90rwCTS',
   'MT' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbMjKD6qnoc8p',
   'MX' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbLuUZrygauiA',
   'MY' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbLRmg3qDbY1H',
@@ -90,7 +90,7 @@ let viralPlaylist = {
   'UY' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbM1qaaFAyPLz',
   'US' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbKuaTI1Z1Afx',
   'VN' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbL1G1MbPav3j',
-  'ZA' : 'spotify:album:3GrlEr00MvyR2TKqyElU6q'
+  'ZA' : 'spotify:user:filtr.za:playlist:0hCbLT00O6Ck3O706GbNje'
 };
 
 spotify.setAccessToken(token);
