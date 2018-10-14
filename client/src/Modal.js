@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 
-
 class Modal extends Component {
   constructor(props){
     super(props);
-    console.log(this.props.data.genreList);
   }
 
   handleClick = e => {
     this.props.handleClick(e.target.id);
   }
+
+  sentenceCase(str) {
+    return str.charAt(0).toUpperCase() + str.substr(1).toLowerCase();
+  }
+
   render(){
     return(
       <div className={`modal fade`} id="modalWindow" tabIndex="1" role="dialog" aria-hidden="true">
