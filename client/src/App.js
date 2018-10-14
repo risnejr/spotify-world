@@ -165,7 +165,8 @@ class App extends Component {
   }
 
   handleClick = (geography) => {
-    if(this.state.country === geography.properties.ISO_A2) {
+    if(this.state.country === geography.properties.ISO_A2 &&
+       this.state.zoom !== 1) {
       this.zoomOut()
       return
     }
@@ -327,6 +328,12 @@ class App extends Component {
                 },
                 hover: {
                   fill: "#55efc4",
+                  stroke: "#00b894",
+                  strokeWidth: 0.75,
+                  outline: "none",
+                },
+                pressed: {
+                  fill: "#00b894",
                   stroke: "#00b894",
                   strokeWidth: 0.75,
                   outline: "none",
