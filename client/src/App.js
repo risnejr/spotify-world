@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Text } from 'react';
 import {
   ComposableMap,
   ZoomableGroup,
@@ -196,6 +196,7 @@ class App extends Component {
 
               this.setState({genreList: [...this.state.genreList, genre]});
             }
+            $("#modalWindow").on('hidden.bs.modal', e => {this.zoomOut()})
             $("#modalWindow").modal();
           }, function(err) {
                console.error(err);
@@ -349,6 +350,7 @@ class App extends Component {
       )}
       </Motion>
       <Modal data = {this.state} handleClick = {this.handleImgClick}/>
+      <h3 style={{position: 'absolute', left: '1vw', bottom: '1vh', color:'#607D8B'}}>{this.state.artist !== '' ? this.state.artist + ' - ' + this.state.song : ''}</h3>
       </div>
     );
   }
