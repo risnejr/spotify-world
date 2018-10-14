@@ -211,12 +211,26 @@ class App extends Component {
 
   handleImgClick = genre => {
     if (genre == "viral"){
-        spotify.play({
-            device_id: deviceId,
-            context_uri: viralPlaylist[this.state.country]
-        })   
+        let playlistUri = viralPlaylist[this.state.country];
+        let temp = playlistUri.split(":");
+        let playlist = temp[temp.length-1];
+        spotify.getPlaylistTracks(playlist, {fields : "total"})
+          .then(data => {
+            let trackPosition = Math.floor(Math.random() * data.total);
+            spotify.play({
+                device_id: deviceId,
+                context_uri: playlistUri,
+                offset : {
+                    position: trackPosition
+                },
+                position_ms: 60000
+            })
+        }, function(err) {
+            console.error(err);
+        });
     }
-    spotify.getCategoryPlaylists(genre, {limit : 1, country: this.state.country})
+    else {
+        spotify.getCategoryPlaylists(genre, {limit : 1, country: this.state.country})
       .then(data => {
         console.log(data);
         let playlist = data.playlists.items[0]
@@ -233,6 +247,7 @@ class App extends Component {
       }, function(err) {
           console.error(err);
       });
+    }
   }
 
   render() {
