@@ -177,13 +177,12 @@ class App extends Component {
     // Play music
     spotify.getCategories({limit : 8, country: geography.properties.ISO_A2})
           .then(data => {
-            // this.setState({genreList: [{
-            //     'id': "viral",
-            //     'name': "Viral",
-            //     'src': "https://t.scdn.co/images/827d138e-b6f6-4467-9782-3550ee1f6bec.jpg"
-            // }]});
-            this.setState({genreList: []});
-            for(let i = 0; i < 8; i++){
+             this.setState({genreList: [{
+                'id': "viral",
+                'name': "Viral",
+                'src': "https://t.scdn.co/images/827d138e-b6f6-4467-9782-3550ee1f6bec.jpg"
+            }]});
+            for(let i = 0; i < 7; i++){
               let genre = {
                   'id': data.categories.items[i].id,
                   'name': data.categories.items[i].name,
@@ -196,33 +195,46 @@ class App extends Component {
           }, function(err) {
                console.error(err);
     });
-    //this.setState({country: ''})
   }
 
   handleImgClick = genre => {
-    // if (genre === "viral"){
-    //     spotify.play({
-    //         device_id: deviceId,
-    //         context_uri: viralPlaylist[this.state.country]
-    //     })
-    // }
-    spotify.getCategoryPlaylists(genre, {limit : 1, country: this.state.country})
-      .then(data => {
-        let playlist = data.playlists.items[0]
-        let playlistUri = playlist.uri
-        let trackPosition = Math.floor(Math.random() * playlist.tracks.total);
-        spotify.play({
-          device_id: deviceId,
-          context_uri: playlistUri,
-          offset: {
-            position: trackPosition
-          },
-          position_ms: 60000
-        })
-      }, function(err) {
-          console.error(err);
-      });
-    $("#modalWindow").modal('hide');
+    if (genre == "viral"){
+        let playlistUri = viralPlaylist[this.state.country];
+        let temp = playlistUri.split(":");
+        let playlist = temp[temp.length-1];
+        spotify.getPlaylistTracks(playlist, {fields : "total"})
+          .then(data => {
+            let trackPosition = Math.floor(Math.random() * data.total);
+            spotify.play({
+                device_id: deviceId,
+                context_uri: playlistUri,
+                offset : {
+                    position: trackPosition
+                },
+                position_ms: 60000
+            })
+        }, function(err) {
+            console.error(err);
+        });
+    }
+    else {
+        spotify.getCategoryPlaylists(genre, {limit : 1, country: this.state.country})
+          .then(data => {
+            let playlist = data.playlists.items[0]
+            let playlistUri = playlist.uri
+            let trackPosition = Math.floor(Math.random() * playlist.tracks.total);
+            spotify.play({
+              device_id: deviceId,
+              context_uri: playlistUri,
+              offset: {
+                position: trackPosition
+              },
+              position_ms: 60000
+            })
+          }, function(err) {
+              console.error(err);
+          });
+    }
   }
 
   render() {
