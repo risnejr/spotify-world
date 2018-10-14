@@ -354,11 +354,8 @@ class App extends Component {
       )}
       </Motion>
       <Modal data = {this.state} handleClick = {this.handleImgClick}/>
-<<<<<<< HEAD
       <h3 style={{position: 'absolute', left: '1vw', bottom: '1vh', color:'#607D8B'}}>{this.state.artist !== '' ? this.state.artist + ' - ' + this.state.song : ''}</h3>
-=======
       <div id="spotAlert" className={`alert alert-dark alert-dismissible text-center fade`} role="alert"></div>
->>>>>>> 863929b255debd121aea11312e35db9e910e3804
       </div>
     );
   }
