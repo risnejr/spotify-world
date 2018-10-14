@@ -173,7 +173,11 @@ class App extends Component {
       zoom: 3,
       country: geography.properties.ISO_A2,
     })
+    $('#modalWindow').on('hidden.bs.modal', e => {this.zoomOut();});
 
+    $("#spotAlert").html(geography.properties.NAME);
+    $("#spotAlert").toggleClass("show");
+    setTimeout(() => {$("#spotAlert").toggleClass('show');}, 5000);
     // Play music
     spotify.getCategories({limit : 8, country: geography.properties.ISO_A2})
           .then(data => {
@@ -198,7 +202,7 @@ class App extends Component {
   }
 
   handleImgClick = genre => {
-    if (genre == "viral"){
+    if (genre === "viral"){
         let playlistUri = viralPlaylist[this.state.country];
         let temp = playlistUri.split(":");
         let playlist = temp[temp.length-1];
@@ -321,6 +325,7 @@ class App extends Component {
       )}
       </Motion>
       <Modal data = {this.state} handleClick = {this.handleImgClick}/>
+      <div id="spotAlert" className={`alert alert-dark alert-dismissible text-center fade`} role="alert"></div>
       </div>
     );
   }
