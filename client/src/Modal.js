@@ -26,8 +26,8 @@ class Modal extends Component {
                       return(
                         <div className="col-md-3" key={index}>
                           <div className={`card mb-3 shadow-sm`}>
-                            <img id={genre.id} src={genre.src} className="card-img-top" alt="Card image cap" onClick={this.handleClick}/>
-                            <p class="card-img-txt">{genre.name}</p>
+                            <img id={genre.id} src={genre.src} className="card-img-top" alt="Card cap" onClick={this.handleClick}/>
+                            <p className="card-img-txt">{genre.name}</p>
                           </div>
                         </div>
                       )
