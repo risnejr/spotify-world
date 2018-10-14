@@ -130,6 +130,13 @@ class App extends Component {
       player.on('account_error', e => console.error(e));
       player.on('playback_error', e => console.error(e));
 
+      player.on('player_state_changed', state => {
+        if(state !== null) {
+          this.setState({song: state.track_window.current_track.name,
+                         artist: state.track_window.current_track.artists[0].name})
+          console.log(this.state.artist, '-', this.state.song)
+        }
+      })
       // player.on('player_state_changed', state => {
       //   this.setState({song: state.track_window.current_track.name,
       //                  artist: state.track_window.current_track.artists[0].name})
@@ -321,6 +328,10 @@ class App extends Component {
       )}
       </Motion>
       <Modal data = {this.state} handleClick = {this.handleImgClick}/>
+        <div id="nowPlaying">
+          <div class="play-button"> </div>
+          <div class="pause-button"> </div>  
+        </div>
       </div>
     );
   }

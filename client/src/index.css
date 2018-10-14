@@ -84,3 +84,45 @@ p.card-img-txt {
   /* left: 35%; */
   color: #fff;
 }
+
+#nowPlaying {
+  padding: 40px;
+  display: flex; 
+  flex-direction: row;
+  
+}
+
+.play-button, .pause-button {
+  height: 40px;
+  width: 65px;    
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 5px;
+  position: relative;
+  margin:10px;  
+}
+
+
+.play-button:after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 10.5px;
+  left: 24px;
+  margin: 0 auto;
+  border-style: solid;
+  border-width: 9.5px 0 9.5px 17px;
+  border-color: transparent transparent transparent rgba(255, 255, 255, 1);
+}
+
+.pause-button:after{
+  content: "";
+  position: absolute;
+  border-color:white;
+  border-style: solid;
+  border-width: 0 0.3em 0 0.3em; 
+  height: 1em;
+  top: 1.7em;
+  left: 1.3em;
+  margin-top: -1em;
+  width: 0.5em;
+}
