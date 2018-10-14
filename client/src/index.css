@@ -72,6 +72,10 @@ footer p {
     cursor:pointer;
 }
 
+.card:hover p{
+  text-decoration: underline;
+}
+
 p.card-img-txt {
   position: absolute;
   width: 100%;

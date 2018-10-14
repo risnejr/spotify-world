@@ -8,7 +8,6 @@ import {
 import Spotify from 'spotify-web-api-js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import $ from 'jquery';
-import Popper from 'popper.js';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import Modal from './Modal';
 import './App.css';
@@ -22,7 +21,7 @@ let token = url.searchParams.get("access_token")
 let spotify = new Spotify();
 let availableMarkets = ["AD", "AR", "AT", "AU", "BE", "BG", "BO", "BR", "CA", "CH", "CL", "CO", "CR", "CY", "CZ", "DE", "DK",
                         "DO", "EC", "EE", "ES", "FI", "FR", "GB", "GR", "GT", "HK", "HN", "HU", "ID", "IE", 'IL', "IS", "IT",
-                        "JP", "LI", "LT", "LU", "LV", "MC", "MT", "MX", "MY", "NI", "NL", "NO", "NZ", "PA", "PE", "PH", "PL", 
+                        "JP", "LI", "LT", "LU", "LV", "MC", "MT", "MX", "MY", "NI", "NL", "NO", "NZ", "PA", "PE", "PH", "PL",
                         "PT", "PY", "RO", "SE", "SG", "SK", "SV", "TR", "TH", "TW", "UY", "US", "VN", "ZA"]
 let deviceId = ""
 
@@ -109,7 +108,9 @@ class App extends Component {
       genreList: [],
       center: [0,1],
       zoom: 1,
-      country: null,
+      country: '',
+      artist: '',
+      song: '',
     }
     this.projection = this.projection.bind(this)
     this.handleClick = this.handleClick.bind(this)
@@ -122,19 +123,24 @@ class App extends Component {
         name: 'Web Playback SDK Template',
         getOAuthToken: cb => { cb(token); }
       });
-    
+
       // Error handling
       player.on('initialization_error', e => console.error(e));
       player.on('authentication_error', e => console.error(e));
       player.on('account_error', e => console.error(e));
       player.on('playback_error', e => console.error(e));
-    
+
+      // player.on('player_state_changed', state => {
+      //   this.setState({song: state.track_window.current_track.name,
+      //                  artist: state.track_window.current_track.artists[0].name})
+      // })
+
       // Ready
       player.on('ready', data => {
         console.log('Ready with Device ID', data.device_id);
         deviceId = data.device_id
       });
-    
+
       // Connect to the player!
       player.connect();
     }
@@ -170,43 +176,26 @@ class App extends Component {
 
     // Play music
     console.log(geography.properties.ISO_A2);
-    // spotify.getCategoryPlaylists('pop', {limit : 1, country: geography.properties.ISO_A2})
-    //   .then(data => {
-    //     console.log(data)
-    //     let playlist = data.playlists.items[0]
-    //     let playlistUri = playlist.uri
-    //     let trackPosition = Math.floor(Math.random() * playlist.tracks.total);
-    //     spotify.play({
-    //       device_id: deviceId,
-    //       context_uri: playlistUri,
-    //       offset: {
-    //         position: trackPosition
-    //       },
-    //       position_ms: 60000
-    //     })
-        
-    //   }, function(err) {
-    //     console.error(err);
-    //   });
       spotify.getCategories({limit : 8, country: geography.properties.ISO_A2})
           .then(data => {
-            console.log(this.state);
-            this.setState({genreList: [{
+             this.setState({genreList: [{
                 'id': "viral",
+                'name': "Viral",
                 'src': "https://t.scdn.co/images/827d138e-b6f6-4467-9782-3550ee1f6bec.jpg"
             }]});
-            for(let i = 1; i < 8; i++){
+            for(let i = 0; i < 7; i++){
               let genre = {
                   'id': data.categories.items[i].id,
+                  'name': data.categories.items[i].name,
                   'src': data.categories.items[i].icons[0].url
               };
+
               this.setState({genreList: [...this.state.genreList, genre]});
-              console.log(data.categories.items[i])
             }
             $("#modalWindow").modal();
           }, function(err) {
                console.error(err);
-          });
+    });
   }
 
   handleImgClick = genre => {
@@ -231,22 +220,21 @@ class App extends Component {
     }
     else {
         spotify.getCategoryPlaylists(genre, {limit : 1, country: this.state.country})
-      .then(data => {
-        console.log(data);
-        let playlist = data.playlists.items[0]
-        let playlistUri = playlist.uri
-        let trackPosition = Math.floor(Math.random() * playlist.tracks.total);
-        spotify.play({
-          device_id: deviceId,
-          context_uri: playlistUri,
-          offset: {
-            position: trackPosition
-          },
-          position_ms: 60000
-        })
-      }, function(err) {
-          console.error(err);
-      });
+          .then(data => {
+            let playlist = data.playlists.items[0]
+            let playlistUri = playlist.uri
+            let trackPosition = Math.floor(Math.random() * playlist.tracks.total);
+            spotify.play({
+              device_id: deviceId,
+              context_uri: playlistUri,
+              offset: {
+                position: trackPosition
+              },
+              position_ms: 60000
+            })
+          }, function(err) {
+              console.error(err);
+          });
     }
   }
 
@@ -301,7 +289,7 @@ class App extends Component {
                 strokeWidth: 0.75,
                 outline: "none",
               },
-              pressed: {  
+              pressed: {
                 fill: "#00b894",
                 stroke: "#00b894",
                 strokeWidth: 0.75,
