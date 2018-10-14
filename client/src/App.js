@@ -19,11 +19,79 @@ import { Motion, spring } from "react-motion"
 let url = new URL(window.location.href)
 let token = url.searchParams.get("access_token")
 let spotify = new Spotify();
-let availableMarkets = ["AD", "AR", "AT", "AU", "BE", "BG", "BO", "BR", "CH", "CL", "CO", "CR", "CY", "CZ", "DE", "DK",
-                        "DO", "EC", "EE", "ES", "FI", "FR", "GB", "GR", "GT", "HK", "HN", "HU", "ID", "IE", "IS", "IT",
-                        "LI", "LT", "LU", "LV", "MC", "MT", "MY", "NI", "NL", "NO", "NZ", "PA", "PE", "PH", "PL", "PT",
-                        "PY", "SE", "SG", "SK", "SV", "TR", "TW", "UY", "US", "JP", "CA", "ZA", "MX", "RO", "TH", "VN"]
+let availableMarkets = ["AD", "AR", "AT", "AU", "BE", "BG", "BO", "BR", "CA", "CH", "CL", "CO", "CR", "CY", "CZ", "DE", "DK",
+                        "DO", "EC", "EE", "ES", "FI", "FR", "GB", "GR", "GT", "HK", "HN", "HU", "ID", "IE", 'IL', "IS", "IT",
+                        "JP", "LI", "LT", "LU", "LV", "MC", "MT", "MX", "MY", "NI", "NL", "NO", "NZ", "PA", "PE", "PH", "PL", 
+                        "PT", "PY", "RO", "SE", "SG", "SK", "SV", "TR", "TH", "TW", "UY", "US", "VN", "ZA"]
 let deviceId = ""
+
+let viralPlaylist = {
+    'AD' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbMxjQJh4Um8T',
+    'AR' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbJajpaXyaKll',
+    'AT' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbKxYYIUIgn7V',
+    'AU' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbO5MSE9RdfN2',
+    'BE' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbJx9hUtTN0Sj',
+    'BG' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbJcpVBLdFV7m',
+    'BO' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbMTKZuy8ORFV',
+    'BR' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbMOkSwG072hV',
+    'CA' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbKfIuOAZrk7G',
+    'CH' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbNjqq6Tw4Fb0',
+    'CL' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbJs8e2vk15a8',
+    'CO' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbKrooeK9WSFF',
+    'CR' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbKOefHPXPMyf',
+    'CY' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbNBxnXSWuAcX',
+    'CZ' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbMBUm3g7j4Kb',
+    'DE' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbNv6cjoMVCyg',
+    'DK' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbMA8BIYDeMkD',
+    'DO' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbJWZV7aRNQck',
+    'EC' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbJpRQ294oZ9N',
+    'EE' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbK4KA2JSuft7',
+    'ES' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbMfVLvbaC3bj',
+    'FI' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbMBNcyQCfU4w',
+    'FR' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbJmRv5TqJW16',
+    'GB' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbL3DLHfQeDmV',
+    'GR' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbLOov4J0GutU',
+    'GT' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbNF1heNYHDnE',
+    'HK' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbKXd6qahcpCg',
+    'HN' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbNpKdqfZ9Upp',
+    'HU' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbLuey1EKVv9I',
+    'ID' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbKpV6RVDTWcZ',
+    'IE' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbLzhUVGQUCoe',
+    'IL' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbNGlbFNNXxgC',
+    'IS' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbMHnoaLVkVuk',
+    'IT' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbNGlbFNNXxgC',
+    'JP' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbINTEnbFeb8d',
+    'LI' : 'spotify:album:2viDI6oI3hemgZROjm9IKZ',
+    'LT' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbLDLOTfCtAUM',
+    'LU' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbJ9SRaVj0yDF',
+    'LV' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbIUY6VUoboP4',
+    'MC' : 'spotify:album:4X8OmfHoxew8PIprjgCp5Z',
+    'MT' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbMjKD6qnoc8p',
+    'MX' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbLuUZrygauiA',
+    'MY' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbLRmg3qDbY1H',
+    'NI' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbKgCVIE0PTOD',
+    'NL' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbMQaPQjt027d',
+    'NO' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbOcsE2WCaJa2',
+    'NZ' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbJ7gPAehey5W',
+    'PA' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbMIO7B1pcKUy',
+    'PE' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbN7gfhgaomhA',
+    'PH' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbJv2Mvelmc3I',
+    'PL' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbNGGDnE9UFTF',
+    'PT' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbKHoaIcElSSA',
+    'PY' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbNxY4E5g33Gy',
+    'RO' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbNwDVyEEfWV3',
+    'SE' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbIPOivNiyjjS',
+    'SG' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbJVi45MafAu0',
+    'SK' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbK3Iy2zvpfp4',
+    'SV' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbLo3yC8XJf1e',
+    'TR' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbMIJZxwqzod6',
+    'TH' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbMnf7ONzeQWM',
+    'TW' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbMGnTCc4Vx7v',
+    'UY' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbM1qaaFAyPLz',
+    'US' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbKuaTI1Z1Afx',
+    'VN' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbL1G1MbPav3j',
+    'ZA' : 'spotify:album:3GrlEr00MvyR2TKqyElU6q'
+};
 
 spotify.setAccessToken(token);
 
@@ -110,8 +178,11 @@ class App extends Component {
     console.log(geography.properties.ISO_A2);
       spotify.getCategories({limit : 8, country: geography.properties.ISO_A2})
           .then(data => {
-            this.setState({genreList: []});
-            for(let i = 0; i < 8; i++){
+            this.setState({genreList: [{
+                'id': "viral",
+                'src': "https://t.scdn.co/images/827d138e-b6f6-4467-9782-3550ee1f6bec.jpg"
+            }]});
+            for(let i = 1; i < 8; i++){
               let genre = {
                   'id': data.categories.items[i].id,
                   'src': data.categories.items[i].icons[0].url
@@ -126,6 +197,12 @@ class App extends Component {
   }
 
   handleImgClick = genre => {
+    if (genre === "viral"){
+        spotify.play({
+            device_id: deviceId,
+            context_uri: viralPlaylist[this.state.country]
+        })   
+    }
     spotify.getCategoryPlaylists(genre, {limit : 1, country: this.state.country})
       .then(data => {
         let playlist = data.playlists.items[0]
