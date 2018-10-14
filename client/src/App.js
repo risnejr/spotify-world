@@ -19,11 +19,16 @@ import { Motion, spring } from "react-motion"
 let url = new URL(window.location.href)
 let token = url.searchParams.get("access_token")
 let spotify = new Spotify();
-let availableMarkets = ["AD", "AR", "AT", "AU", "BE", "BG", "BO", "BR", "CA", "CH", "CL", "CO", "CR", "CY", "CZ", "DE", "DK",
-  "DO", "EC", "EE", "ES", "FI", "FR", "GB", "GR", "GT", "HK", "HN", "HU", "ID", "IE", 'IL', "IS", "IT",
-  "JP", "LI", "LT", "LU", "LV", "MC", "MT", "MX", "MY", "NI", "NL", "NO", "NZ", "PA", "PE", "PH", "PL",
-  "PT", "PY", "RO", "SE", "SG", "SK", "SV", "TR", "TH", "TW", "UY", "US", "VN", "ZA"]
 let deviceId = ""
+
+let availableMarkets =
+  [
+"AD", "AR", "AT", "AU", "BE", "BG", "BO", "BR", "CA", "CH", "CL", "CO", "CR",
+"CY", "CZ", "DE", "DK", "DO", "EC", "EE", "ES", "FI", "FR", "GB", "GR", "GT",
+"HK", "HN", "HU", "ID", "IE", 'IL', "IS", "IT", "JP", "LI", "LT", "LU", "LV",
+"MC", "MT", "MX", "MY", "NI", "NL", "NO", "NZ", "PA", "PE", "PH", "PL", "PT",
+"PY", "RO", "SE", "SG", "SK", "SV", "TR", "TH", "TW", "UY", "US", "VN", "ZA"
+  ];
 
 let viralPlaylist = {
   'AD' : 'spotify:user:spotifycharts:playlist:37i9dQZEVXbMxjQJh4Um8T',
