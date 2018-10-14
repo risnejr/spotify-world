@@ -130,10 +130,13 @@ class App extends Component {
       player.on('account_error', e => console.error(e));
       player.on('playback_error', e => console.error(e));
 
-      // player.on('player_state_changed', state => {
-      //   this.setState({song: state.track_window.current_track.name,
-      //                  artist: state.track_window.current_track.artists[0].name})
-      // })
+      player.on('player_state_changed', state => {
+        if(state !== null) {
+          this.setState({song: state.track_window.current_track.name,
+                         artist: state.track_window.current_track.artists[0].name})
+          console.log(this.state.artist, '-', this.state.song)
+        }
+      })
 
       // Ready
       player.on('ready', data => {
@@ -198,7 +201,7 @@ class App extends Component {
   }
 
   handleImgClick = genre => {
-    if (genre == "viral"){
+    if (genre === "viral"){
         let playlistUri = viralPlaylist[this.state.country];
         let temp = playlistUri.split(":");
         let playlist = temp[temp.length-1];
