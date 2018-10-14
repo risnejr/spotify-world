@@ -222,6 +222,7 @@ class App extends Component {
       }, function(err) {
           console.error(err);
       });
+    $("#modalWindow").modal('hide');
   }
 
   render() {
