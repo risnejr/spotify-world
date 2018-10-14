@@ -19,7 +19,7 @@ let spotify = new Spotify();
 let availableMarkets = ["AD", "AR", "AT", "AU", "BE", "BG", "BO", "BR", "CH", "CL", "CO", "CR", "CY", "CZ", "DE", "DK",
                         "DO", "EC", "EE", "ES", "FI", "FR", "GB", "GR", "GT", "HK", "HN", "HU", "ID", "IE", "IS", "IT",
                         "LI", "LT", "LU", "LV", "MC", "MT", "MY", "NI", "NL", "NO", "NZ", "PA", "PE", "PH", "PL", "PT",
-                        "PY", "SE", "SG", "SK", "SV", "TR", "TW", "UY", "US", "JP", "CA", "ZA", "MX", "RO", "TH"]
+                        "PY", "SE", "SG", "SK", "SV", "TR", "TW", "UY", "US", "JP", "CA", "ZA", "MX", "RO", "TH", "VN"]
 let deviceId = ""
 
 spotify.setAccessToken(token);
